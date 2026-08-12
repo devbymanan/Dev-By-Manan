@@ -1,0 +1,19 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/dev.db
+backend/uploads/
+
+# Env
+.env
+backend/.env
+
+# Node / Next.js (frontend, added in Phase 2)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# OS
+.DS_Store

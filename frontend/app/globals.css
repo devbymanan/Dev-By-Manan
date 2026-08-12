@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+.dark {
+  --bg-void: #0a0b0e;
+  --bg-raised: #14161b;
+  --bg-raised-2: #1b1e24;
+  --line: #262a31;
+  --ink: #f2f3f5;
+  --ink-muted: #8b909b;
+  --signal: #3d6bff;
+  --signal-soft: #7c97ff;
+  /* Slightly darker than --signal, reserved for solid button fills that
+     carry white text. --signal itself (#3d6bff) is 4.43:1 against white —
+     just under the 4.5:1 AA floor for normal-weight 14px text — and
+     --signal-soft goes lighter on hover in dark mode, which fails harder
+     (~2.7:1). These two are the accessible equivalents, checked to meet
+     4.5:1 with white in both themes. Everywhere else (borders, icons,
+     text-on-page-background) keeps using --signal, which already clears
+     AA on its own. */
+  --signal-fill: #3454d1;
+  --signal-fill-hover: #2c46b3;
+}
+
+.light {
+  --bg-void: #f7f7f9;
+  --bg-raised: #ffffff;
+  --bg-raised-2: #eef0f4;
+  --line: #e2e4e9;
+  --ink: #0d0e11;
+  --ink-muted: #5b6068;
+  --signal: #3d6bff;
+  --signal-soft: #2850db;
+  --signal-fill: #3454d1;
+  --signal-fill-hover: #2c46b3;
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-void);
+  color: var(--ink);
+}
+
+/* Visible keyboard focus everywhere — accessibility floor from PRD Section 7 */
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Custom cursor: only on devices with a real pointer (desktop). Touch
+   devices keep the native cursor — no gimmick where it doesn't apply. */
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-ready {
+    cursor: none;
+  }
+  body.cursor-ready a,
+  body.cursor-ready button,
+  body.cursor-ready [role="button"] {
+    cursor: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: var(--signal);
+  color: #ffffff;
+}
+
+/* reCAPTCHA v3's floating badge is hidden per Google's own allowance,
+   since ContactForm.tsx includes the required Privacy Policy / Terms of
+   Service disclosure text as a substitute. */
+.grecaptcha-badge {
+  visibility: hidden;
+}
