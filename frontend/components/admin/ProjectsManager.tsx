@@ -151,6 +151,7 @@ function ProjectForm({
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -205,12 +206,12 @@ function ProjectForm({
     try {
       if (savedProjectId) {
         await updateProject(token, savedProjectId, payload);
-        onDone();
+        setSuccess("Changes saved successfully!");
+        setTimeout(() => setSuccess(null), 4000);
       } else {
         const created = await createProject(token, payload);
-        // Stay on the form so image upload becomes available, matching the
-        // spec: the image panel only appears once the project has an id.
         setSavedProjectId(created.id);
+        setSuccess("Project created! You can now upload images below.");
       }
     } catch (err) {
       if (err instanceof AdminApiError) {
@@ -355,6 +356,12 @@ function ProjectForm({
               it&apos;s gated server-side, not just hidden in the UI.
             </p>
           </div>
+
+          {success && (
+            <p className="flex items-center gap-2 text-sm text-emerald-400" role="status">
+              ✓ {success}
+            </p>
+          )}
 
           {error && (
             <p className="text-sm text-red-400" role="alert">

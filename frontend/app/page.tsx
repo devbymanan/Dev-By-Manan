@@ -8,6 +8,8 @@ import ContactSection from "@/components/Contact/ContactSection";
 import Footer from "@/components/Footer";
 import SignalDivider from "@/components/SignalDivider";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./constants";
+import { API_BASE_URL, getBaseUrl } from "./constants";
 
 export type SkillCategory = "frontend" | "backend" | "database" | "tools";
 
@@ -67,20 +67,23 @@ export interface Tag {
  * than let a slow/failed request break the page, callers get `fallback`
  * and the section renders its own empty state.
  */
-async function fetchJSON<T>(path: string, fallback: T, revalidateSeconds = 60): Promise<T> {
+async function fetchJSON<T>(path: string, fallback: T): Promise<T> {
   try {
+    const baseUrl = getBaseUrl();
+    const url = path.startsWith("http") ? path : `${baseUrl}${path}`;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
 
-    const res = await fetch(`${API_BASE_URL}${path}`, {
+    const res = await fetch(url, {
       signal: controller.signal,
-      next: { revalidate: revalidateSeconds },
+      cache: "no-store",
     });
     clearTimeout(timeout);
 
     if (!res.ok) return fallback;
     return (await res.json()) as T;
-  } catch {
+  } catch (err) {
+    console.error(`fetchJSON error for ${path}:`, err);
     return fallback;
   }
 }
