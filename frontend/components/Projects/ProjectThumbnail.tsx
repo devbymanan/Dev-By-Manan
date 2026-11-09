@@ -25,6 +25,19 @@ export default function ProjectThumbnail({
     );
   }
 
+  if (resolved.startsWith("data:")) {
+    return (
+      <div className={`relative overflow-hidden ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={resolved}
+          alt={alt}
+          className="h-full w-full object-cover"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <Image src={resolved} alt={alt} fill sizes="(max-width: 768px) 100vw, 400px" className="object-cover" />

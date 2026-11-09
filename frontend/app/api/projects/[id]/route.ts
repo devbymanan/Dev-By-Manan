@@ -46,7 +46,7 @@ export async function GET(
       short_description: p.short_description,
       full_description: p.full_description,
       challenge_solution: p.challenge_solution,
-      thumbnail_url: p.thumbnail_url,
+      thumbnail_url: p.thumbnail_url || (imageRows.length > 0 ? imageRows[0].image_url : null),
       live_demo_url: p.live_demo_url,
       github_url: p.is_public_code ? p.github_url : null,
       is_featured: Boolean(p.is_featured),
@@ -67,3 +67,4 @@ export async function GET(
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+

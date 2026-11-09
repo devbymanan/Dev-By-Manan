@@ -23,7 +23,7 @@ export async function GET() {
 
     const projectIds = projects.map((p) => p.id);
 
-    // 2. Fetch tags for these projects
+    // 2. Fetch tags and first image for these projects
     const tagRows = await sql`
       SELECT pt.project_id, t.name as tag_name
       FROM project_tags pt
@@ -39,12 +39,23 @@ export async function GET() {
       tagsByProject[r.project_id].push(r.tag_name);
     }
 
+    const imageRows = await sql`
+      SELECT DISTINCT ON (project_id) project_id, image_url
+      FROM project_images
+      WHERE project_id = ANY(${projectIds})
+      ORDER BY project_id, display_order ASC, id ASC
+    `;
+    const firstImageByProject: Record<number, string> = {};
+    for (const img of imageRows) {
+      firstImageByProject[img.project_id] = img.image_url;
+    }
+
     // 3. Assemble response
     const result = projects.map((p) => ({
       id: p.id,
       title: p.title,
       short_description: p.short_description,
-      thumbnail_url: p.thumbnail_url,
+      thumbnail_url: p.thumbnail_url || firstImageByProject[p.id] || null,
       is_featured: Boolean(p.is_featured),
       is_public_code: Boolean(p.is_public_code),
       live_demo_url: p.live_demo_url,
@@ -59,3 +70,4 @@ export async function GET() {
     return NextResponse.json([], { status: 500 });
   }
 }
+
