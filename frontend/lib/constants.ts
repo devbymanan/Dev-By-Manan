@@ -1,5 +1,5 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "";
+// The API is hosted natively in Next.js on the same origin.
+export const API_BASE_URL = "";
 
 export const NAV_ITEMS = [
   { label: "About", href: "#about" },
