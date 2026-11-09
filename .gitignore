@@ -9,8 +9,12 @@ backend/uploads/
 # Env
 .env
 .env.*
+*.env
+*.env.*
 backend/.env
 backend/.env.*
+frontend/.env
+frontend/.env.*
 
 # Node / Next.js (frontend, added in Phase 2)
 frontend/node_modules/
