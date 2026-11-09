@@ -92,7 +92,7 @@ async function fetchJSON<T>(path: string, fallback: T, revalidateSeconds = 60): 
  */
 export function resolveMediaUrl(path?: string | null): string | null {
   if (!path) return null;
-  if (path.startsWith("http")) return path;
+  if (path.startsWith("http") || path.startsWith("data:")) return path;
   return `${API_BASE_URL}${path}`;
 }
 

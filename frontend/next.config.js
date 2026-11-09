@@ -8,9 +8,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        // Render backend serves uploaded project images / resume in production.
-        // Update this once the real Render service URL is known.
-        hostname: "*.onrender.com",
+        hostname: "**",
       },
     ],
   },
