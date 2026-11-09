@@ -48,10 +48,12 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error("Admin login error:", error);
+    const message = error instanceof Error ? error.message : "Internal server error";
+    console.error("Admin login error:", message);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }
 }
+
